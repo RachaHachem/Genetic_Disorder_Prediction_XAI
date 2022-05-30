@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genetic Disorder Prediction Using XAI</title>
+    <style>
+        input[type=number], select {
+        width: 10%;
+        padding: 8px 8px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        }
+        input[type=radio]{
+            margin: 10px;
+        }
+        input[type=submit] {
+            width: 20%;
+            background-color: blue;
+            color: white;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .feature{
+            font-size: 18px;
+            padding: 10px;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <h2>Please enter your information in the following form to get a prediction</h2>
+    <div>
+    <form method ="POST">
+        <label class="feature" for="age">Patient Age</label>
+        <input type="number" id="age" name="age">
+        <br><br>
+        <label class="feature" for="age">Blood Cell Count (mcL)</label>
+        <input type="number" id="bcc" name="bcc">
+        <br><br>
+        <label class="feature" for="mother-age">Mother's Age</label>
+        <input type="number" id="mother-age" name="mother-age">
+        <br><br>
+        <label class="feature" for="father-age">Father's Age</label>
+        <input type="number" id="father-age" name="father-age">
+        <br><br>
+        <label class="feature" for="abortions">No. of Previous Abortions</label>
+        <input type="number" id="abortions" name="abortions">
+        <br><br>
+        <label class="feature" for="wbcc">White Blood cell count (thousand per microliter)</label>
+        <input type="number" id="wbcc" name="wbcc">
+
+        <br><br>
+        <label class="feature" for="mother-gene">Genes in Mother's Side </label>
+        <input type="radio" id="mother-gene" name="mother-gene" value="1">
+        <label for="mother-gene">Yes</label>
+        <input type="radio" id="mother-gene" name="mother-gene" value="0">
+        <label for="mother-gene">No</label>
+        <br><br>
+        <label class="feature" for="father-gene">Genes in Father's Side </label>
+        <input type="radio" id="father-gene" name="father-gene" value="1">
+        <label for="father-gene">Yes</label>
+        <input type="radio" id="father-gene" name="father-gene" value="0">
+        <label for="father-gene">No</label>
+        <br><br>
+        <label class="feature" for="maternal-gene">Maternal Gene</label>
+        <input type="radio" id="maternal-gene" name="maternal-gene" value="1">
+        <label for="maternal-gene">Yes</label>
+        <input type="radio" id="maternal-gene" name="maternal-gene" value="0">
+        <label for="maternal-gene">No</label>
+        <br><br>
+        <label class="feature" for="paternal-gene">Paternal Gene</label>
+        <input type="radio" id="paternal-gene" name="paternal-gene" value="1">
+        <label for="paternal-gene">Yes</label>
+        <input type="radio" id="paternal-gene" name="paternal-gene" value="0">
+        <label for="paternal-gene">No</label>
+        <br><br>
+        <label class="feature" for="status">Status</label>
+        <input type="radio" id="status" name="status" value="1">
+        <label for="status">Deceased</label>
+        <input type="radio" id="status" name="status" value="0">
+        <label for="status">Alive</label>
+        <br><br>
+        <label class="feature" for="rr">Respiratory Rate (breaths/min)</label>
+        <input type="radio" id="rr" name="rr" value="0">
+        <label for="status">Normal</label>
+        <input type="radio" id="rr" name="rr" value="1">
+        <label for="rr">Tachypnea</label>
+        <br><br>
+        <label class="feature" for="hr">Heart Rate (rates/min)</label>
+        <input type="radio" id="hr" name="hr" value="0">
+        <label for="hr">Normal</label>
+        <input type="radio" id="hr" name="hr" value="1">
+        <label for="hr">Tachycardia</label>
+        <br><br>
+        <label class="feature" for="risk">Patient's Level of Risk</label>
+        <input type="radio" id="risk" name="risk" value="0">
+        <label for="risk">High</label>
+        <input type="radio" id="risk" name="risk" value="1">
+        <label for="risk">Low</label>
+        <br><br>
+        <label class="feature" for="gender">Gender</label>
+        <input type="radio" id="gender" name="gender" value="0">
+        <label for="gender">Ambiguous</label>
+        <input type="radio" id="gender" name="gender" value="1">
+        <label for="gender">Female</label>
+        <input type="radio" id="gender" name="gender" value="2">
+        <label for="gender">Male</label>
+        <br><br>
+        <label class="feature" for="folic-acid">Folic Acid Details (peri-conceptional)</label>
+        <input type="radio" id="folic-acid" name="folic-acid" value="1">
+        <label for="folic-acid">Yes</label>
+        <input type="radio" id="folic-acid" name="folic-acid" value="0">
+        <label for="folic-acid">No</label>
+        <br><br>
+        <label class="feature" for="maternal-illness">History of Serious Maternal Illness</label>
+        <input type="radio" id="maternal-illness" name="maternal-illness" value="1">
+        <label for="maternal-illness">Yes</label>
+        <input type="radio" id="maternal-illness" name="maternal-illness" value="0">
+        <label for="maternal-illness">No</label>
+        <br><br>
+        <label class="feature" for="conceptive">Assisted Conception IVF/ART</label>
+        <input type="radio" id="conceptive" name="conceptive" value="1">
+        <label for="conceptive">Yes</label>
+        <input type="radio" id="conceptive" name="conceptive" value="0">
+        <label for="conceptive">No</label>
+        <br><br>
+        <label class="feature" for="conceptive">History of Anomalies in Previous Pregnancies </label>
+        <input type="radio" id="conceptive" name="conceptive" value="1">
+        <label for="conceptive">Yes</label>
+        <input type="radio" id="conceptive" name="conceptive" value="0">
+        <label for="conceptive">No</label>
+        <br><br>
+        <label class="feature" for="defects">Birth Defects</label>
+        <input type="radio" id="defects" name="defects" value="1">
+        <label for="defects">Singular</label>
+        <input type="radio" id="defects" name="defects" value="0">
+        <label for="defects">Multiple</label>
+        <br><br>
+        <label class="feature" for="blood-test">Blood Test Result</label>
+        <input type="radio" id="blood-test" name="blood-test" value="0">
+        <label for="blood-test">Abnormal</label>
+        <input type="radio" id="blood-test" name="blood-test" value="1">
+        <label for="blood-test">Inconclusive</label>
+        <input type="radio" id="blood-test" name="blood-test" value="2">
+        <label for="blood-test">Normal</label>
+        <input type="radio" id="blood-test" name="blood-test" value="3">
+        <label for="blood-test">Slightly Abnormal</label>
+        <br><br>
+        <label class="feature" for="symptom1">Symptom 1</label>
+        <input type="radio" id="symptom1" name="symptom1" value="1">
+        <label for="symptom1">True</label>
+        <input type="radio" id="symptom1" name="symptom1" value="0">
+        <label for="symptom1">False</label>
+        <br><br>
+        <label class="feature" for="symptom2">Symptom 2</label>
+        <input type="radio" id="symptom2" name="symptom2" value="1">
+        <label for="symptom2">True</label>
+        <input type="radio" id="symptom2" name="symptom2" value="0">
+        <label for="symptom2">False</label>
+        <br><br>
+        <label class="feature" for="symptom3">Symptom 3</label>
+        <input type="radio" id="symptom3" name="symptom3" value="1">
+        <label for="symptom3">True</label>
+        <input type="radio" id="symptom3" name="symptom3" value="0">
+        <label for="symptom3">False</label>
+        <br><br>
+        <label class="feature" for="symptom4">Symptom 4</label>
+        <input type="radio" id="symptom4" name="symptom4" value="1">
+        <label for="symptom4">True</label>
+        <input type="radio" id="symptom4" name="symptom4" value="0">
+        <label for="symptom4">False</label>
+        <br><br>
+        <label class="feature" for="symptom5">Symptom 5</label>
+        <input type="radio" id="symptom5" name="symptom5" value="1">
+        <label for="symptom5">True</label>
+        <input type="radio" id="symptom5" name="symptom5" value="0">
+        <label for="symptom5">False</label>
+        <br><br>
+        
+        <input type ="submit" value="Submit">
+      </form>
+    </div>
+</body>
+</html>
