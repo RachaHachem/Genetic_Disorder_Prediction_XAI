@@ -15,21 +15,52 @@ model = DisorderPredictor(model_path1, model_path2)
 #     return render_template('index.html', template_folder='templates')
 
 
+@app.route("/")
+def my_form():
+    return render_template('index.html', template_folder='templates')
+
+
 @app.route("/", methods=["GET", "POST"])
 def predict():
 
     # get user input
-    age = request.form['age']
-    # continue with all the features
+    age = float(request.form['age'])
+    bcc = float(request.form['bcc'])
+    mother_age = float(request.form['motherAge'])
+    father_age = float(request.form['fatherAge'])
+    abortions = float(request.form['abortions'])
+    wbcc = float(request.form['wbcc'])
+    mother_gene = float(request.form['motherGene'])
+    father_gene = float(request.form['fatherGene'])
+    maternal_gene = float(request.form['maternalGene'])
+    paternal_gene = float(request.form['paternalGene'])
+    status = float(request.form['status'])
+    rr = float(request.form['rr'])
+    hr = float(request.form['hr'])
+    risk = float(request.form['risk'])
+    gender = float(request.form['gender'])
+    folic_acid = float(request.form['folicAcid'])
+    maternal_illness = float(request.form['maternalIllness'])
+    conceptive = float(request.form['conceptive'])
+    anomalies = float(request.form['anomalies'])
+    defects = float(request.form['defects'])
+    blood_test = float(request.form['bloodTest'])
+    symptom1 = float(request.form['symptom1'])
+    symptom2 = float(request.form['symptom2'])
+    symptom3 = float(request.form['symptom3'])
+    symptom4 = float(request.form['symptom4'])
+    symptom5 = float(request.form['symptom5'])
 
     # make prediction
-    prediction = model.predict(age, )  # all the features
+    prediction = model.predict(age, bcc, mother_age, father_age, abortions, wbcc, mother_gene,
+                               father_gene, maternal_gene, paternal_gene, status, rr, hr, risk, gender, folic_acid, maternal_illness,
+                               conceptive, anomalies, defects, blood_test, symptom1, symptom2, symptom3, symptom4, symptom5)  # all the features
 
-    return render_template("index.html", result=str(prediction))
+    return render_template("result.html", template_folder='templates', result=str(prediction))
 
 ###
 
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=port, ssl_context='adhoc')
