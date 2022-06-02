@@ -1,14 +1,19 @@
 from flask import Flask, render_template, request
 import os
 from disorder_model import DisorderPredictor
+from explainer import Explainer
 
 app = Flask(__name__)
 
 model_path1 = 'genetic_disorder_model.h5'
 model_path2 = 'subclass_model.h5'
 
+explainer_path1 = 'genetic_disorder_data.pkl'
+explainer_path2 = 'subclass_data.pkl'
 
 model = DisorderPredictor(model_path1, model_path2)
+
+explainer = Explainer(explainer_path1, explainer_path2)
 
 # @app.route('/')
 # def home():
@@ -52,11 +57,11 @@ def predict():
     symptom5 = float(request.form['symptom5'])
 
     # make prediction
-    prediction = model.predict(age, bcc, mother_age, father_age, abortions, wbcc, mother_gene,
+    (prediction, genetic_explainer, subclass_explainer) = model.predict(explainer, age, bcc, mother_age, father_age, abortions, wbcc, mother_gene,
                                father_gene, maternal_gene, paternal_gene, status, rr, hr, risk, gender, folic_acid, maternal_illness,
                                conceptive, anomalies, defects, blood_test, symptom1, symptom2, symptom3, symptom4, symptom5)  # all the features
 
-    return render_template("result.html", template_folder='templates', result=str(prediction))
+    return render_template("result.html", template_folder='templates', result=str(prediction), shap_plot1=genetic_explainer, shap_plot2=subclass_explainer)
 
 ###
 

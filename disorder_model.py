@@ -5,10 +5,9 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 import logging
 import numpy as np
-import pickle
-import matplotlib.pyplot as plt
 import tensorflow
-# tensorflow.compat.v1.disable_v2_behavior()
+from explainer import Explainer
+tensorflow.compat.v1.disable_v2_behavior()
 # hide TF warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -34,7 +33,7 @@ class DisorderPredictor:
             logging.info("after: ", input[i])
         return input
 
-    def predict(self, age, bcc, mother_age, father_age, abortions, wbcc, mother_gene,
+    def predict(self, explainer, age, bcc, mother_age, father_age, abortions, wbcc, mother_gene,
                 father_gene, maternal_gene, paternal_gene, status, rr, hr, risk, gender, folic_acid, maternal_illness,
                 conceptive, anomalies, defects, blood_test, symptom1, symptom2, symptom3, symptom4, symptom5):
 
@@ -47,6 +46,8 @@ class DisorderPredictor:
 
         model_input = np.reshape(model_input, (1, 26))
 
+        genetic_explainer = explainer.plot_explainer(self.disorder_model, model_input, 'genetic')
+
         disorder_prediction = self.disorder_model.predict(model_input)
         disorder_prediction = disorder_prediction.argmax()
 
@@ -56,6 +57,8 @@ class DisorderPredictor:
         model_input = np.append(model_input, disorder_prediction)
 
         model_input = np.reshape(model_input, (1, 27))
+
+        subclass_explainer = explainer.plot_explainer(self.subclass_model, model_input, 'subclass')
 
         subclass_prediction = self.subclass_model.predict(model_input).argmax()
 
@@ -80,4 +83,4 @@ class DisorderPredictor:
         elif subclass_prediction == 8:
             subclass = "Tay-Sachs"
 
-        return subclass
+        return [subclass, genetic_explainer, subclass_explainer]
