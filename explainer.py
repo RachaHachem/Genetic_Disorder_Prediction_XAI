@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import sklearn
 import lifelines
 import shap
+import numpy as np
 
 
 class Explainer:
@@ -14,11 +15,12 @@ class Explainer:
 
     def plot_explainer(self, model, input, data):
         if data == 'genetic':
-            e = shap.DeepExplainer(model,  self.genetic_data)
+            e = shap.DeepExplainer(model,  self.genetic_data.values)
         else:
             e = shap.DeepExplainer(model,  self.subclass_data)
-        vals = self.explainer.shap_values(input)
+        vals = e.shap_values(input)
         shap.initjs()
-        features_importance = shap.force_plot(e.expected_value[0], vals[0], input,show=False)
+        features_importance = shap.force_plot(
+            e.expected_value[0], vals[0], input, show=False)
         shap_html = f"<p>{features_importance.html()}</p>"
         return shap_html
