@@ -15,7 +15,7 @@ class Explainer:
 
     def plot_explainer(self, model, input, data):
         if data == 'genetic':
-            e = shap.DeepExplainer(model,  self.genetic_data.values)
+            e = shap.DeepExplainer(model,  self.genetic_data)
         else:
             e = shap.DeepExplainer(model,  self.subclass_data)
         vals = e.shap_values(input)

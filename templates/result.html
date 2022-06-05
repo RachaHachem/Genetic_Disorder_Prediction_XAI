@@ -2,14 +2,19 @@
 
 <html lang="en">
 <head>
-    shap.getjs()
     <meta charset="UTF-8">
     <title>Genetic Disorder Prediction Using XAI</title>
+    <script>shap.getjs()</script>
+    <style>
+        .result{
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <h2>The result of your genetic disorder prediction is the following class:</h2>
-    <h3 name="result">{{result}}</h3>
+    <h3 class="result" name="result">{{result}}</h3>
     <!-- <div name="shap_plot1">{{shap_plot1}}</div>
     <div name="shap_plot2">{{shap_plot2}}</div> -->
 </body>
