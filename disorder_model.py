@@ -6,8 +6,7 @@ from tensorflow.keras.models import Sequential
 import logging
 import numpy as np
 import tensorflow
-from explainer import Explainer
-tensorflow.compat.v1.disable_v2_behavior()
+# tensorflow.compat.v1.disable_v2_behavior()
 # hide TF warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -46,7 +45,7 @@ class DisorderPredictor:
 
         model_input = np.reshape(model_input, (1, 26))
 
-        genetic_explainer = explainer.plot_explainer(self.disorder_model, model_input, 'genetic')
+        # genetic_explainer = explainer.plot_explainer(self.disorder_model, model_input, 'genetic')
 
         disorder_prediction = self.disorder_model.predict(model_input)
         disorder_prediction = disorder_prediction.argmax()
@@ -58,7 +57,7 @@ class DisorderPredictor:
 
         model_input = np.reshape(model_input, (1, 27))
 
-        subclass_explainer = explainer.plot_explainer(self.subclass_model, model_input, 'subclass')
+        # subclass_explainer = explainer.plot_explainer(self.subclass_model, model_input, 'subclass')
 
         subclass_prediction = self.subclass_model.predict(model_input).argmax()
 
@@ -83,4 +82,5 @@ class DisorderPredictor:
         elif subclass_prediction == 8:
             subclass = "Tay-Sachs"
 
-        return [subclass, genetic_explainer, subclass_explainer]
+        # return [subclass, genetic_explainer, subclass_explainer]
+        return subclass
